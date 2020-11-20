@@ -12,18 +12,18 @@ Source0: https://github.com/opinkerfi/okconfig/archive/%{name}-%{version}.tar.gz
 License: GPLv2
 Group: System Environment/Libraries
 Requires: python >= 2.3
-BuildRequires: python-devel
+BuildRequires: python2-devel
 %if %is_suse
 BuildRequires: gettext-devel
 %else
 %if 0%{?fedora} >= 16
-BuildRequires: python-setuptools
+BuildRequires: python2-setuptools
 %else
 %if 0%{?fedora} >= 8
-BuildRequires: python-setuptools-devel
+BuildRequires: python2-setuptools-devel
 %else
 %if 0%{?rhel} >= 5
-BuildRequires: python-setuptools
+BuildRequires: python2-setuptools
 %endif
 %endif
 %endif
