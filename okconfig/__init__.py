@@ -146,10 +146,10 @@ def addhost(host_name, address=None, group_name=None, templates=None, use=None, 
     Returns:
      String message with result of addhost
     """
-    if group_name is None or group_name is '': group_name = 'default'
+    if group_name is None or group_name == '': group_name = 'default'
     if templates is None: templates = []
     if alias is None: alias = host_name
-    if address is None or address is '':
+    if address is None or address == '':
         try:
             address = socket.gethostbyname(host_name)
         except:
@@ -270,7 +270,7 @@ def addcontact(contact_name, alias=None, force=False, group_name="default", emai
     Returns:
      True if operation was successful
     """
-    if group_name is None or group_name is '': group_name = 'default'
+    if group_name == None or group_name == '': group_name = 'default'
     # Check if contact already exists
     try:
         contact = pynag.Model.Contact.objects.get_by_shortname(contact_name)
@@ -320,15 +320,15 @@ def addservice(inherit_settings_from, host_name, service_description=None, group
         raise OKConfigError("cannot find service '%s' to inherit settings from" % inherit_settings_from)
     parent_service = tmp[0]
 
-    if service_description is None:
-        if parent_service.service_description is None:
+    if service_description == None:
+        if parent_service.service_description == None:
             raise OKConfigError("service_description not defined and parent '%s' does not have any." % inherit_settings_from)
         service_description = parent_service.service_description
     tmp = pynag.Model.Service.objects.filter(host_name=host_name,service_description=service_description)
-    if len(tmp) is 0: # Service not found. This is indeed a new service
+    if len(tmp) == 0: # Service not found. This is indeed a new service
         service = pynag.Model.Service()
         service._meta['filename'] = filename
-    elif len(tmp) is 1: # There is another service defined just like this one
+    elif len(tmp) == 1: # There is another service defined just like this one
         service = tmp[0]
         if not force:
             filename = service.get_filename()

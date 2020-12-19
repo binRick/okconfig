@@ -3,6 +3,7 @@
 
 %define is_suse %(test -e /etc/SuSE-release && echo 1 || echo 0)
 %define release 1
+%define __python /usr/bin/python3
 
 Summary: Python Nagios Template management and configuration power tools
 Name: okconfig
@@ -11,19 +12,19 @@ Release: %{release}%{?dist}
 Source0: https://github.com/opinkerfi/okconfig/archive/%{name}-%{version}.tar.gz
 License: GPLv2
 Group: System Environment/Libraries
-Requires: python >= 2.3
-BuildRequires: python2-devel
+Requires: python3 >= 3
+BuildRequires: python3-devel
 %if %is_suse
 BuildRequires: gettext-devel
 %else
 %if 0%{?fedora} >= 16
-BuildRequires: python2-setuptools
+BuildRequires: python3-setuptools
 %else
 %if 0%{?fedora} >= 8
-BuildRequires: python2-setuptools-devel
+BuildRequires: python3-setuptools-devel
 %else
 %if 0%{?rhel} >= 5
-BuildRequires: python2-setuptools
+BuildRequires: python3-setuptools
 %endif
 %endif
 %endif
@@ -32,10 +33,10 @@ BuildRequires: python2-setuptools
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Url: http://github.com/opinkerfi/okconfig
 BuildArch: noarch 
-Requires: pynag python-paramiko winexe
-Requires: nagios-plugins-nrpe  nagios-plugins-ping nagios-plugins-ssh
-Requires: nagios-okplugin-apc nagios-okplugin-brocade nagios-okplugin-mailblacklist
-Requires: nagios-okplugin-check_disks nagios-okplugin-check_time nagios-plugins-fping
+Requires: pynag python3-paramiko samba-winexe
+#Requires: nagios-plugins-nrpe  nagios-plugins-ping nagios-plugins-ssh
+#Requires: nagios-okplugin-apc nagios-okplugin-brocade nagios-okplugin-mailblacklist
+#Requires: nagios-okplugin-check_disks nagios-okplugin-check_time nagios-plugins-fping
 
 %description
 A robust template mechanism for Nagios configuration files. Providing
@@ -69,6 +70,7 @@ install -m 644 etc/profile.d/* $RPM_BUILD_ROOT/%{_sysconfdir}/profile.d/
 rm -fr $RPM_BUILD_ROOT
 
 %files
+%exclude /usr/lib/python3.9/site-packages/okconfig/__pycache__
 %defattr(-, root, root, -)
 %if "%{python_version}" >= "2.5"
 %{python_sitelib}/okconfig*.egg-info
@@ -83,7 +85,6 @@ rm -fr $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/okconfig.conf
 %config(noreplace) %{_sysconfdir}/bash_completion.d/okconfig
 %config(noreplace) %{_sysconfdir}/logrotate.d/okconfig
-#%{_mandir}/man1/okconfig.1.gz
 %defattr(0775, nagios, nagios)
 %attr(0770, nagios, nagios) %dir %{_localstatedir}/log/okconfig
 %dir %{_sysconfdir}/nagios/okconfig
